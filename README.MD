@@ -59,10 +59,7 @@ docker system prune  --volumes
 ```
 
 # Todo
-- convert to Helm 3 chart
-- dedicated Master Node cluster
-- dedicated Data Node cluster
-- Xpack licence install
+- Notes for testing Beats
 
 # References
 - https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
