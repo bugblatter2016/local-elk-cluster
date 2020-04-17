@@ -1,4 +1,14 @@
-# Notes on running local ELK Stack
+# Running local ELK Stack on Docker
+
+This will build 5 containers:
+- 1 x Elasticsearch Master / Ingest Node
+- 2 x Elasticsearch Data Nodes
+- 1 x Kibana
+- 1 x Logstash
+
+Versions of Elasticsearch and cluster password can be set using the **env.sh**.
+
+NOTE: if you change the password you will also need to update **./pipeline/logstash.conf** too
 
 ## Pre-requisites
 - docker
@@ -6,16 +16,20 @@
 
 ## Elasticsearch
 
+### set local environment vars
+```bash
+source ./env.sh
+```
+
 ### Start Cluster
 ```bash
-cd elasticsearch
 docker-compose up -d
 ```
 
 ### Check Status of Elasticsearch
 ```bash
-docker-compose logs
-curl -X GET "localhost:9200/_cat/nodes?v&pretty"
+docker-compose logs -f
+curl -X GET "localhost:9200/_cat/nodes?v&pretty" -u elastic:changeme
 ```
 
 ### Connect to Kibana
@@ -32,20 +46,20 @@ curl -H "Content-Type: application/json" -X POST "http://localhost:9600" -d'
 '
 ```
 
-
 ## Filebeat
-```bash
-
-```
+Todo
 
 ## Metricbeat
-```bash
-
-```
-
+Todo
 
 # Cleanup
 
+## Stop containers
+```bash
+docker-compose down
+```
+
+## Prune local system
 > REF: https://docs.docker.com/config/pruning/
 
 ```bash
