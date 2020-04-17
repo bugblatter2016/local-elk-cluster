@@ -1,0 +1,143 @@
+version: "3.3"
+
+services:
+
+  es-master-01:
+    image: "docker.elastic.co/elasticsearch/elasticsearch:${VERSION}"
+    container_name: es-master-01
+    environment:
+      node.name: es-master-01
+      node.master: "true"
+      node.data: "false"
+      node.ingest: "true"
+      cluster.name: es-cluster
+      discovery.seed_hosts: es-master-01
+      cluster.initial_master_nodes: es-master-01
+      bootstrap.memory_lock: "true"
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+      ELASTIC_USERNAME: elastic
+      ELASTIC_PASSWORD: "${ES_PASSWORD}"
+      http.cors.enabled: "true"
+      http.cors.allow-origin: "*"
+#      xpack.security.transport.ssl.enabled: "true"
+#      xpack.security.enabled: "true"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-master-01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - elastic
+
+  es-data-01:
+    image: "docker.elastic.co/elasticsearch/elasticsearch:${VERSION}"
+    container_name: es-data-01
+    environment:
+      node.name: es-data-01
+      node.master: "false"
+      node.data: "true"
+      node.ingest: "false"
+      cluster.name: es-cluster
+      discovery.seed_hosts: es-master-01
+      cluster.initial_master_nodes: es-master-01
+      bootstrap.memory_lock: "true"
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+      ELASTIC_USERNAME: elastic
+      ELASTIC_PASSWORD: "${ES_PASSWORD}"
+      http.cors.enabled: "true"
+      http.cors.allow-origin: "*"
+#      xpack.security.transport.ssl.enabled: "true"
+#      xpack.security.enabled: "true"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data-01:/usr/share/elasticsearch/data
+    ports:
+      - 9201:9201
+    networks:
+      - elastic
+
+  es-data-02:
+    image: "docker.elastic.co/elasticsearch/elasticsearch:${VERSION}"
+    container_name: es-data-02
+    environment:
+      node.name: es-data-02
+      node.master: "false"
+      node.data: "true"
+      node.ingest: "false"
+      cluster.name: es-cluster
+      discovery.seed_hosts: es-master-01
+      cluster.initial_master_nodes: es-master-01
+      bootstrap.memory_lock: "true"
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+      ELASTIC_USERNAME: elastic
+      ELASTIC_PASSWORD: "${ES_PASSWORD}"
+      http.cors.enabled: "true"
+      http.cors.allow-origin: "*"
+#      xpack.security.transport.ssl.enabled: "true"
+#      xpack.security.enabled: "true"
+
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data-02:/usr/share/elasticsearch/data
+    ports:
+      - 9202:9202
+    networks:
+      - elastic
+
+  kibana-01:
+    image: "docker.elastic.co/kibana/kibana:${VERSION}"
+    container_name: kibana-01
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_URL: http://es-master-01:9200
+      ELASTICSEARCH_HOSTS: http://es-master-01:9200
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: "${ES_PASSWORD}"
+    networks:
+      - elastic
+    depends_on:
+      - es-master-01
+      - es-data-01
+      - es-data-02
+
+  logstash-01:
+    image: "docker.elastic.co/logstash/logstash:${VERSION}"
+    container_name: logstash-01
+    environment:
+      LS_JAVA_OPTS: "-Xmx3g"
+    volumes:
+      - ./logstash/logstash.conf:/etc/logstash/conf.d/logstash.conf
+    command: logstash -f /etc/logstash/conf.d/logstash.conf
+    ports:
+      - 5044:5044
+      - 9600:9600
+    networks:
+      - elastic
+    depends_on:
+      - es-master-01
+      - es-data-01
+      - es-data-02
+
+volumes:
+  es-master-01:
+    driver: local
+  es-data-01:
+    driver: local
+  es-data-02:
+    driver: local
+  logstash-01:
+    driver: local
+
+networks:
+  elastic:
+    driver: bridge

@@ -1,0 +1,7 @@
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /var/log/*.log
+output.logstash:
+  hosts: ["localhost:5044"]
