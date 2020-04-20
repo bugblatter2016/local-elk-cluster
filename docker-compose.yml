@@ -132,6 +132,8 @@ services:
     container_name: logstash-01
     environment:
       xpack.monitoring.elasticsearch.hosts: http://es-master-01:9200
+      xpack.monitoring.elasticsearch.username: elastic
+      xpack.monitoring.elasticsearch.password: "${ES_PASSWORD}"
       LS_JAVA_OPTS: "-Xmx3g"
     volumes:
       - "${LOGSTASH_CONF_DIR}:/usr/share/logstash/pipeline/"
@@ -145,6 +147,20 @@ services:
       - es-data-01
       - es-data-02
 
+#  redis-01:
+#    image: "redis:alpine"
+#    container_name: redis-01
+#    command: redis-server --requirepass "${REDIS_PASSWORD}"
+#    ports:
+#      - 6379:6379
+#    volumes:
+#      - redis-01:/var/lib/redis
+#      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+#    environment:
+#      - REDIS_REPLICATION_MODE=master
+#    networks:
+#      - elastic
+
 volumes:
   es-master-01:
     driver: local
@@ -154,6 +170,8 @@ volumes:
     driver: local
   logstash-01:
     driver: local
+#  redis-01:
+#    driver: local
 
 networks:
   elastic:
