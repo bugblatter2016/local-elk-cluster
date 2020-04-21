@@ -1,7 +1,21 @@
+filebeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+  #reload.period: 10s
+
 filebeat.inputs:
   - type: log
     enabled: true
     paths:
       - /var/log/*.log
+
 output.logstash:
   hosts: ["localhost:5044"]
+
+setup.kibana:
+  host: "localhost:5601"
+  username: "elastic"
+  password: "changeme"
+
+#logging.level: debug
+#logging.selectors: ["*"]

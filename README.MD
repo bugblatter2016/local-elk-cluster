@@ -47,10 +47,54 @@ curl -H "Content-Type: application/json" -X POST "http://localhost:9600" -d'
 ```
 
 ## Filebeat
-Todo
+> REF: https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation.html
+
+### Install on MAC OS
+```bash
+brew tap elastic/tap
+brew install elastic/tap/filebeat-full
+cp filebeat.yml /usr/local/etc/filebeat/filebeat.yml
+```
+
+### Configure Index and configure System module and dashboards
+```bash
+filebeat setup --index-management -E output.logstash.enabled=false -E 'output.elasticsearch.hosts=["elastic:changeme@localhost:9200"]'
+filebeat modules enable system
+filebeat setup --dashboards
+```
+
+### Run some logs into Logstash
+```bash
+filebeat -e
+```
+
+### Reload Logstash config on the fly
+If you update the ./pipeline/logstash.conf file then changes will be reflected inside the Docker image.  Using SIGHUP 
+provides a convenient way to test Logstash configurations by forcing a reload of the Logstash service.
+```bash
+docker exec -u root logstash-01 bash -c 'kill -HUP 1'
+```
 
 ## Metricbeat
-Todo
+> REF: https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-installation.html
+
+### Install on MAC OS
+```bash
+brew tap elastic/tap
+brew install elastic/tap/metricbeat-full
+cp metricbeat.yml /usr/local/etc/metricbeat/metricbeat.yml
+```
+
+### Configure Metricbeat Dashboards
+```bash
+metricbeat setup --index-management -E output.logstash.enabled=false -E 'output.elasticsearch.hosts=["elastic:changeme@localhost:9200"]'
+metricbeat setup --dashboards
+```
+
+### Run some metrics into Logstash
+```bash
+metricbeat -e
+```
 
 # Cleanup
 
