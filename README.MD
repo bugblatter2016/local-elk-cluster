@@ -46,6 +46,13 @@ curl -H "Content-Type: application/json" -X POST "http://localhost:9600" -d'
 '
 ```
 
+### Reload Logstash config on the fly
+If you update the ./pipeline/logstash.conf file then changes will be reflected inside the Docker image.  Using SIGHUP 
+provides a convenient way to test Logstash configurations by forcing a reload of the Logstash service.
+```bash
+docker exec -u root logstash-01 bash -c 'kill -HUP 1'
+```
+
 ## Filebeat
 > REF: https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation.html
 
@@ -66,13 +73,6 @@ filebeat setup --dashboards
 ### Run some logs into Logstash
 ```bash
 filebeat -e
-```
-
-### Reload Logstash config on the fly
-If you update the ./pipeline/logstash.conf file then changes will be reflected inside the Docker image.  Using SIGHUP 
-provides a convenient way to test Logstash configurations by forcing a reload of the Logstash service.
-```bash
-docker exec -u root logstash-01 bash -c 'kill -HUP 1'
 ```
 
 ## Metricbeat
