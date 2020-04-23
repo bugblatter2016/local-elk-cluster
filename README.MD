@@ -54,13 +54,19 @@ docker exec -u root logstash-01 bash -c 'kill -HUP 1'
 ```
 
 ## Filebeat
-> REF: https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation.html
 
-### Install on MAC OS
+### Install the client
+On your test environment (use following link for detailed instructions)
+- https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation.html
+
+### Copy config file for Filebeat
+MAC OS
 ```bash
-brew tap elastic/tap
-brew install elastic/tap/filebeat-full
-cp filebeat.yml /usr/local/etc/filebeat/filebeat.yml
+cp filebeat.yml /usr/local/etc/metricbeat/filebeat.yml
+```
+Linux
+```bash
+cp filebeat.yml /etc/metricbeat/filebeat.yml
 ```
 
 ### Configure Index and configure System module and dashboards
@@ -76,13 +82,19 @@ filebeat -e
 ```
 
 ## Metricbeat
-> REF: https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-installation.html
 
-### Install on MAC OS
+### Install the client
+On your test environment (use following link for detailed instructions)
+- https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-installation.html
+
+### Copy config file for Metricbeat
+MAC OS
 ```bash
-brew tap elastic/tap
-brew install elastic/tap/metricbeat-full
 cp metricbeat.yml /usr/local/etc/metricbeat/metricbeat.yml
+```
+Linux
+```bash
+cp metricbeat.yml /etc/metricbeat/metricbeat.yml
 ```
 
 ### Configure Metricbeat Dashboards
