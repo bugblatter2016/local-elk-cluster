@@ -30,6 +30,9 @@ services:
       memlock:
         soft: -1
         hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
     volumes:
       - es-master-01:/usr/share/elasticsearch/data
       - ./certs/elastic-certificates.p12:/usr/share/elasticsearch/config/elastic-certificates.p12
@@ -66,6 +69,9 @@ services:
       memlock:
         soft: -1
         hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
     volumes:
       - es-data-01:/usr/share/elasticsearch/data
       - ./certs/elastic-certificates.p12:/usr/share/elasticsearch/config/elastic-certificates.p12
@@ -102,6 +108,9 @@ services:
       memlock:
         soft: -1
         hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
     volumes:
       - es-data-02:/usr/share/elasticsearch/data
       - ./certs/elastic-certificates.p12:/usr/share/elasticsearch/config/elastic-certificates.p12
