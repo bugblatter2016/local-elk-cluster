@@ -13,8 +13,8 @@ services:
       cluster.name: es-cluster
       discovery.seed_hosts: es-master-01
       cluster.initial_master_nodes: es-master-01
-      bootstrap.memory_lock: "true"
-      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+      bootstrap.memory_lock: "true"                # avoid Memory Swapping to disk
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"            # best practice to reduce Garbage collections
       ELASTIC_USERNAME: elastic
       ELASTIC_PASSWORD: "${ES_PASSWORD}"
       http.cors.enabled: "true"
@@ -52,8 +52,8 @@ services:
       cluster.name: es-cluster
       discovery.seed_hosts: es-master-01
       cluster.initial_master_nodes: es-master-01
-      bootstrap.memory_lock: "true"
-      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+      bootstrap.memory_lock: "true"                # avoid Memory Swapping to disk
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"            # best practice to reduce Garbage collections
       ELASTIC_USERNAME: elastic
       ELASTIC_PASSWORD: "${ES_PASSWORD}"
       http.cors.enabled: "true"
@@ -91,8 +91,8 @@ services:
       cluster.name: es-cluster
       discovery.seed_hosts: es-master-01
       cluster.initial_master_nodes: es-master-01
-      bootstrap.memory_lock: "true"
-      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+      bootstrap.memory_lock: "true"                # avoid Memory Swapping to disk
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"            # best practice to reduce Garbage collections
       ELASTIC_USERNAME: elastic
       ELASTIC_PASSWORD: "${ES_PASSWORD}"
       http.cors.enabled: "true"
