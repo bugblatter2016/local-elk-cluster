@@ -137,7 +137,6 @@ docker system prune  --volumes
 
 
 # Changes made to run the stack on a Linux Box
-- 
 Elasticsearch require vm.max_map_count to be set as 262144.
 To fix the problem with vm.max_map_count too small run to increase it on the box
 
